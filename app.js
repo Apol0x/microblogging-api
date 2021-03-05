@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const mongoose = require('mongoose')
 
 var app = express();
 
@@ -37,5 +38,12 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+//conexion bbdd MongoDB
+const uri = "mongodb+srv://user_first1:1234abc@cluster0.k6gwo.mongodb.net/mymerndb?retryWrites=true&w=majority";
+mongoose.set('useCreateIndex',true);
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
+.then(()=> console.log('mymerndb connection successful'))
+.catch((err)=> console.error(err));
 
 module.exports = app;
