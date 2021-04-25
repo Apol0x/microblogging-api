@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,12 +25,12 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -40,10 +41,9 @@ app.use(function(err, req, res, next) {
 });
 
 //conexion bbdd MongoDB
-const uri = "mongodb+srv://user_first1:1234abc@cluster0.k6gwo.mongodb.net/mymerndb?retryWrites=true&w=majority";
-mongoose.set('useCreateIndex',true);
-mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
-.then(()=> console.log('mymerndb connection successful'))
-.catch((err)=> console.error(err));
+mongoose.set('useCreateIndex', true);
+mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('mymerndb connection successful'))
+  .catch((err) => console.error(err));
 
 module.exports = app;
